@@ -6,7 +6,8 @@ services:
     environment:
       OPEN_AI_API_KEY: 'YOUR API KEY'
       MODEL: 'gpt-3.5-turbo-16k-0613'
-      OPEN_AI_PROXY: ''
+      OPEN_AI_PROXY: '127.0.0.1:7890'
+      PROXY: '127.0.0.1:7890'
       SINGLE_CHAT_PREFIX: '[""]'
       SINGLE_CHAT_REPLY_PREFIX: ''
       GROUP_CHAT_PREFIX: '["bot", "@bot", "机器人", "機器人"]'
