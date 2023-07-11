@@ -31,5 +31,5 @@ RUN chmod +x /entrypoint.sh \
     && chown -R noroot:noroot /home/noroot ${BUILD_PREFIX} /usr/local/lib
 
 USER noroot
-
+EXPOSE 8080
 ENTRYPOINT ["/entrypoint.sh"]

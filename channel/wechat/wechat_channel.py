@@ -24,6 +24,10 @@ from config import conf, get_appdata_dir
 from lib import itchat
 from lib.itchat.content import *
 
+from cachetools import TTLCache
+
+_cache = TTLCache(maxsize=1000, ttl=60 * 2)
+
 
 @itchat.msg_register([TEXT, VOICE, PICTURE, NOTE])
 def handler_single_msg(msg):
@@ -92,6 +96,8 @@ def qrCallback(uuid, status, qrcode):
         print(qr_api4)
         print(qr_api2)
         print(qr_api1)
+
+        _cache["login_qr"] = qr_api1
 
         qr = qrcode.QRCode(border=1)
         qr.add_data(url)

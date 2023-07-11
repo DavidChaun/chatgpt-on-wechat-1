@@ -22,6 +22,8 @@ from ..storage.templates import wrap_user_dict
 from .contact import update_local_chatrooms, update_local_friends
 from .messages import produce_msg
 
+from bot.advance.wecom_bot_requestor import request as webhook
+
 logger = logging.getLogger('itchat')
 
 
@@ -332,6 +334,7 @@ def start_receiving(self, exitCallback=None, getReceivingFnOnly=False):
             exitCallback()
         else:
             logger.info('LOG OUT!')
+            webhook("你的微信机器人bot已经下线了！")
     if getReceivingFnOnly:
         return maintain_loop
     else:
