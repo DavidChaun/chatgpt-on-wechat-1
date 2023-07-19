@@ -17,8 +17,8 @@ COPY requirements-optional.txt /app/requirements-optional.txt
 ENV PYTHONPATH /app
 RUN pip config set global.index-url https://mirrors.aliyun.com/pypi/simple
 RUN pip install --no-cache --upgrade pip
-RUN pip install -r requirements.txt
-RUN pip install -r requirements-optional.txt
+RUN pip install -r /app/requirements.txt
+RUN pip install -r /app/requirements-optional.txt
 RUN pip install azure-cognitiveservices-speech
 
 ADD . ${BUILD_PREFIX}
