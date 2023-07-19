@@ -5,20 +5,23 @@ ARG TZ='Asia/Shanghai'
 
 ARG CHATGPT_ON_WECHAT_VER
 
-RUN echo /etc/apt/sources.list
-# RUN sed -i 's/deb.debian.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list
+# RUN echo /etc/apt/sources.list
+RUN sed -i 's/deb.debian.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list
+RUN apt-get update &&apt-get install -y --no-install-recommends bash ffmpeg espeak libavcodec-extra
+
 ENV BUILD_PREFIX=/app
+RUN mkdir -p ${BUILD_PREFIX}
+COPY requirements.txt /app/requirements.txt
+COPY requirements-optional.txt /app/requirements-optional.txt
+
+ENV PYTHONPATH /app
+RUN pip config set global.index-url https://mirrors.aliyun.com/pypi/simple
+RUN pip install --no-cache --upgrade pip
+RUN pip install -r requirements.txt
+RUN pip install -r requirements-optional.txt
+RUN pip install azure-cognitiveservices-speech
 
 ADD . ${BUILD_PREFIX}
-
-RUN apt-get update \
-    &&apt-get install -y --no-install-recommends bash ffmpeg espeak libavcodec-extra\
-    && cd ${BUILD_PREFIX} \
-    && cp config-template.json config.json \
-    && /usr/local/bin/python -m pip install --no-cache --upgrade pip \
-    && pip install --no-cache -r requirements.txt \
-    && pip install --no-cache -r requirements-optional.txt \
-    && pip install azure-cognitiveservices-speech
 
 WORKDIR ${BUILD_PREFIX}
 
