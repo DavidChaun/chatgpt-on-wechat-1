@@ -11,4 +11,4 @@ dulwich
 wechaty>=0.10.7
 wechaty_puppet>=0.4.23
 
-chatgpt_tool_hub==0.4.4
+chatgpt_tool_hub==0.4.6

@@ -1,0 +1,37 @@
+FROM python:3.10-slim
+
+LABEL maintainer="foo@bar.com"
+ARG TZ='Asia/Shanghai'
+
+ARG CHATGPT_ON_WECHAT_VER
+
+# RUN echo /etc/apt/sources.list
+RUN sed -i 's/deb.debian.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list.d/debian.sources
+RUN apt-get update &&apt-get install -y --no-install-recommends bash ffmpeg espeak libavcodec-extra
+
+ENV BUILD_PREFIX=/app
+RUN mkdir -p ${BUILD_PREFIX}
+COPY requirements.txt /app/requirements.txt
+COPY my-requirements.txt /app/my-requirements.txt
+
+ENV PYTHONPATH /app
+RUN pip config set global.index-url https://mirrors.aliyun.com/pypi/simple
+RUN pip config set global.extra-index-url https://pypi.tuna.tsinghua.edu.cn/simple
+RUN pip install --no-cache --upgrade pip
+RUN pip install -r /app/requirements.txt
+RUN pip install -r /app/my-requirements.txt
+
+ADD . ${BUILD_PREFIX}
+
+WORKDIR ${BUILD_PREFIX}
+
+ADD docker/entrypoint.sh /entrypoint.sh
+
+RUN chmod +x /entrypoint.sh \
+    && mkdir -p /home/noroot \
+    && groupadd -r noroot \
+    && useradd -r -g noroot -s /bin/bash -d /home/noroot noroot \
+    && chown -R noroot:noroot /home/noroot ${BUILD_PREFIX} /usr/local/lib
+
+USER noroot
+ENTRYPOINT ["/entrypoint.sh"]
