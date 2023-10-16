@@ -12,3 +12,5 @@ wechaty>=0.10.7
 wechaty_puppet>=0.4.23
 
 chatgpt_tool_hub==0.4.6
+
+eai-commons==0.0.5.dev0

@@ -9,6 +9,7 @@ services:
       - seccomp:unconfined
     environment:
       OPEN_AI_API_KEY: ''
+      OPEN_AI_API_BASE: 'https://openkey.cloud/v1'
       MODEL: 'gpt-3.5-turbo-16k-0613'
       PROXY: '172.18.0.1:7890'
       SINGLE_CHAT_PREFIX: '[""]'

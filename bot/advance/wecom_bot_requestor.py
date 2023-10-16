@@ -5,7 +5,7 @@ from config import conf
 
 
 def request(content: str) -> None:
-    wecom_bot_webhook_key = conf().get("wecom_bot_webhook_key")
+    wecom_bot_webhook_key = conf().get("WECOM_BOT_WEBHOOK_KEY")
     response = requests.post(
         url=f"https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key={wecom_bot_webhook_key}",
         headers={
