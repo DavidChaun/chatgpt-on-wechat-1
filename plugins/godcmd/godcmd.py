@@ -136,9 +136,9 @@ ADMIN_COMMANDS = {
 
 # 定义帮助函数
 def get_help_text(isadmin, isgroup):
-    help_text = "通用指令：\n"
+    help_text = "通用指令\n"
     for cmd, info in COMMANDS.items():
-        if cmd == "auth":  # 不提示认证指令
+        if cmd in ["auth", "set_openai_api_key", "reset_openai_api_key", "set_gpt_model", "reset_gpt_model", "gpt_model"]:  # 不显示帮助指令
             continue
         if cmd == "id" and conf().get("channel_type", "wx") not in ["wxy", "wechatmp"]:
             continue
@@ -151,7 +151,7 @@ def get_help_text(isadmin, isgroup):
 
     # 插件指令
     plugins = PluginManager().list_plugins()
-    help_text += "\n目前可用插件有："
+    help_text += "\n可用插件"
     for plugin in plugins:
         if plugins[plugin].enabled and not plugins[plugin].hidden:
             namecn = plugins[plugin].namecn
@@ -266,14 +266,16 @@ class Godcmd(Plugin):
                     if not isadmin and not self.is_admin_in_group(e_context["context"]):
                         ok, result = False, "需要管理员权限执行"
                     elif len(args) == 0:
-                        ok, result = True, "当前模型为: " + str(conf().get("model"))
+                        model = conf().get("model") or const.GPT35
+                        ok, result = True, "当前模型为: " + str(model)
                     elif len(args) == 1:
                         if args[0] not in const.MODEL_LIST:
                             ok, result = False, "模型名称不存在"
                         else:
-                            conf()["model"] = args[0]
+                            conf()["model"] = self.model_mapping(args[0])
                             Bridge().reset_bot()
-                            ok, result = True, "模型设置为: " + str(conf().get("model"))
+                            model = conf().get("model") or const.GPT35
+                            ok, result = True, "模型设置为: " + str(model)
                 elif cmd == "id":
                     ok, result = True, user
                 elif cmd == "set_openai_api_key":
@@ -311,7 +313,7 @@ class Godcmd(Plugin):
                     except Exception as e:
                         ok, result = False, "你没有设置私有GPT模型"
                 elif cmd == "reset":
-                    if bottype in [const.OPEN_AI, const.CHATGPT, const.CHATGPTONAZURE, const.LINKAI, const.BAIDU, const.XUNFEI]:
+                    if bottype in [const.OPEN_AI, const.CHATGPT, const.CHATGPTONAZURE, const.LINKAI, const.BAIDU, const.XUNFEI, const.QWEN, const.GEMINI]:
                         bot.sessions.clear_session(session_id)
                         if Bridge().chat_bots.get(bottype):
                             Bridge().chat_bots.get(bottype).sessions.clear_session(session_id)
@@ -337,7 +339,7 @@ class Godcmd(Plugin):
                             ok, result = True, "配置已重载"
                         elif cmd == "resetall":
                             if bottype in [const.OPEN_AI, const.CHATGPT, const.CHATGPTONAZURE, const.LINKAI,
-                                           const.BAIDU, const.XUNFEI]:
+                                           const.BAIDU, const.XUNFEI, const.QWEN, const.GEMINI]:
                                 channel.cancel_all_session()
                                 bot.sessions.clear_all_session()
                                 ok, result = True, "重置所有会话成功"
@@ -467,3 +469,9 @@ class Godcmd(Plugin):
         if context["isgroup"]:
             return context.kwargs.get("msg").actual_user_id in global_config["admin_users"]
         return False
+
+
+    def model_mapping(self, model) -> str:
+        if model == "gpt-4-turbo":
+            return const.GPT4_TURBO_PREVIEW
+        return model
