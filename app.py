@@ -40,26 +40,19 @@ def login(access: str):
 
     times = 0
     max_times = 50
-    qr_url = None
+    qr_byte = None
     while times < max_times:
-        qr_url = _cache.get("login_qr")
-        if qr_url:
+        qr_byte = _cache.get("login_qr")
+        if qr_byte:
             _cache.pop("login_qr")
             break
         else:
             times += 1
             time.sleep(3)
 
-    if not qr_url:
+    if not qr_byte:
         return {"code": 500, "msg": "no qr"}
-    response = requests.get(
-        url=qr_url,
-        headers={"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"},
-        verify=False
-    )
-    _byte = response.content
-
-    return Response(content=_byte)
+    return Response(content=qr_byte)
 
 
 def sigterm_handler_wrap(_signo):

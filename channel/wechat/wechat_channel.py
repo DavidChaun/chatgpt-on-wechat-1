@@ -86,7 +86,7 @@ def qrCallback(uuid, status, qrcode):
         except Exception as e:
             pass
 
-        import qrcode
+        from qrcode import QRCode
 
         url = f"https://login.weixin.qq.com/l/{uuid}"
 
@@ -100,9 +100,9 @@ def qrCallback(uuid, status, qrcode):
         print(qr_api2)
         print(qr_api1)
 
-        _cache["login_qr"] = qr_api1
+        _cache["login_qr"] = qrcode
 
-        qr = qrcode.QRCode(border=1)
+        qr = QRCode(border=1)
         qr.add_data(url)
         qr.make(fit=True)
         qr.print_ascii(invert=True)
@@ -164,6 +164,10 @@ class WechatChannel(ChatChannel):
         else:
             logger.debug("[WX]receive msg: {}, cmsg={}".format(cmsg.content, cmsg))
         context = self._compose_context(cmsg.ctype, cmsg.content, isgroup=False, msg=cmsg)
+        # fixme
+        # 这里可以全部发送给接收信息的api
+        # 仿真接收。定时器从api里面获取context（user的消息列表，三秒内连续的同一个用户的消息），然后组成一条信息作为context
+        # 单图消息，如果后续没有文字消息，则不继续发送
         if context:
             self.produce(context)
 
@@ -186,6 +190,8 @@ class WechatChannel(ChatChannel):
         else:
             logger.debug("[WX]receive group msg: {}".format(cmsg.content))
         context = self._compose_context(cmsg.ctype, cmsg.content, isgroup=True, msg=cmsg)
+        # fixme
+        # 这里可以全部发送给接收信息的api，同理
         if context:
             self.produce(context)
 
