@@ -10,8 +10,10 @@ services:
     environment:
       OPEN_AI_API_KEY: ''
       OPEN_AI_API_BASE: 'https://openkey.cloud/v1'
-      MODEL: 'gpt-3.5-turbo-16k-0613'
-      PROXY: '172.18.0.1:7890'
+      MODEL: 'gpt-4o-2024-08-06'
+      TEXT_TO_IMAGE: 'dall-e-3'
+      USE_LOCAL: 'False'
+      BOT_LOCAL_URL: 'http://127.0.0.1:3000/messages'
       SINGLE_CHAT_PREFIX: '[""]'
       SINGLE_CHAT_REPLY_PREFIX: ''
       GROUP_CHAT_PREFIX: '["bot", "@bot", "机器人", "機器人"]'

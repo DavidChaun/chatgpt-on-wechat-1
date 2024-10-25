@@ -5,6 +5,8 @@
   "text_to_image": "dall-e-2",
   "voice_to_text": "openai",
   "text_to_voice": "openai",
+  "use_local": "False",
+  "bot_local_url": "http://127.0.0.1:3000/messages",
   "proxy": "",
   "hot_reload": false,
   "single_chat_prefix": [

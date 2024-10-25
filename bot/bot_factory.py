@@ -52,4 +52,8 @@ def create_bot(bot_type):
         from bot.gemini.google_gemini_bot import GoogleGeminiBot
         return GoogleGeminiBot()
 
+    elif bot_type == const.ME_IN_LOCAL:
+        from bot.advance.local_bot import MessageQueueBot
+        return MessageQueueBot()
+
     raise RuntimeError

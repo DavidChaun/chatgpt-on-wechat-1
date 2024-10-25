@@ -8,10 +8,12 @@ LINKAI = "linkai"
 CLAUDEAI = "claude"
 QWEN = "qwen"
 GEMINI = "gemini"
+ME_IN_LOCAL = "MeInLocal"
 
 # model
 GPT35 = "gpt-3.5-turbo"
 GPT4 = "gpt-4"
+GPT4O = "gpt-4o-2024-08-06"
 GPT4_TURBO_PREVIEW = "gpt-4-1106-preview"
 GPT4_VISION_PREVIEW = "gpt-4-vision-preview"
 WHISPER_1 = "whisper-1"

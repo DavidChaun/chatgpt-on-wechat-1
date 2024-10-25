@@ -4,6 +4,7 @@ from enum import Enum
 
 
 class ReplyType(Enum):
+    NOTHING = 0  # 空回复
     TEXT = 1  # 文本
     VOICE = 2  # 音频文件
     IMAGE = 3  # 图片文件

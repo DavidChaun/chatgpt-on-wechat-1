@@ -164,10 +164,6 @@ class WechatChannel(ChatChannel):
         else:
             logger.debug("[WX]receive msg: {}, cmsg={}".format(cmsg.content, cmsg))
         context = self._compose_context(cmsg.ctype, cmsg.content, isgroup=False, msg=cmsg)
-        # fixme
-        # 这里可以全部发送给接收信息的api
-        # 仿真接收。定时器从api里面获取context（user的消息列表，三秒内连续的同一个用户的消息），然后组成一条信息作为context
-        # 单图消息，如果后续没有文字消息，则不继续发送
         if context:
             self.produce(context)
 
@@ -190,14 +186,15 @@ class WechatChannel(ChatChannel):
         else:
             logger.debug("[WX]receive group msg: {}".format(cmsg.content))
         context = self._compose_context(cmsg.ctype, cmsg.content, isgroup=True, msg=cmsg)
-        # fixme
-        # 这里可以全部发送给接收信息的api，同理
         if context:
             self.produce(context)
 
     # 统一的发送函数，每个Channel自行实现，根据reply的type字段发送不同类型的消息
     def send(self, reply: Reply, context: Context):
         receiver = context["receiver"]
+        logger.info("[WX] to nickname: {}".format(self.name))
+        if reply.type == ReplyType.NOTHING:
+            logger.info("[WX] sendMsg={}, receiver={}".format(reply, receiver))
         if reply.type == ReplyType.TEXT:
             itchat.send(reply.content, toUserName=receiver)
             logger.info("[WX] sendMsg={}, receiver={}".format(reply, receiver))

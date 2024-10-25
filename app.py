@@ -55,6 +55,22 @@ def login(access: str):
     return Response(content=qr_byte)
 
 
+@app.post(
+    "/callback",
+    description="callback",
+)
+def callback(session_id: str, msg: str):
+    from channel.wechat.wechat_channel import WechatChannel
+    from bridge.reply import Reply, ReplyType
+    from bridge.context import Context, ContextType
+
+    reply = Reply(ReplyType.TEXT, msg)
+    context = Context(ContextType.TEXT, kwargs={"receiver": session_id})
+    WechatChannel().send(reply, context)
+
+    return {"status": "success"}
+
+
 def sigterm_handler_wrap(_signo):
     old_handler = signal.getsignal(_signo)
 
