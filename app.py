@@ -17,6 +17,7 @@ import time
 from fastapi import FastAPI, Request, Response, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from channel.wechat.wechat_channel import _cache
+from bot.advance.wecom_bot_requestor import request as wehook
 
 
 app = FastAPI()
@@ -39,10 +40,10 @@ def login(access: str):
     threading.Thread(target=run).start()
 
     times = 0
-    max_times = 50
+    max_times = 10
     qr_byte = None
     while times < max_times:
-        qr_byte = _cache.get("login_qr")
+        qr_byte = _cache.get("login_qr", None)
         if qr_byte:
             _cache.pop("login_qr")
             break
@@ -52,6 +53,8 @@ def login(access: str):
 
     if not qr_byte:
         return {"code": 500, "msg": "no qr"}
+
+    wehook(f"使用微信扫码进行登陆：\n{_cache.get('login_url', None)}")
     return Response(content=qr_byte)
 
 

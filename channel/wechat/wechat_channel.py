@@ -101,6 +101,7 @@ def qrCallback(uuid, status, qrcode):
         print(qr_api1)
 
         _cache["login_qr"] = qrcode
+        _cache["login_url"] = qr_api2
 
         qr = QRCode(border=1)
         qr.add_data(url)
