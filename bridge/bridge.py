@@ -41,7 +41,7 @@ class Bridge(object):
 
         if model_type in ["claude"]:
             self.btype["chat"] = const.CLAUDEAI
-        if conf().get("use_local", "false") == "True":
+        if conf().get("use_local", False) is True:
             self.btype["chat"] = const.ME_IN_LOCAL
         self.bots = {}
         self.chat_bots = {}
