@@ -26,6 +26,8 @@ class OpenaiVoice(Voice):
             reply = Reply(ReplyType.TEXT, text)
             logger.info("[Openai] voiceToText text={} voice file name={}".format(text, voice_file))
         except Exception as e:
+            logger.error(e)
+            logger.error(f"[Openai] voice path: {voice_file}")
             reply = Reply(ReplyType.ERROR, "我暂时还无法听清您的语音，请稍后再试吧~")
         finally:
             return reply
