@@ -7,6 +7,7 @@
   "text_to_voice": "openai",
   "use_local": "False",
   "bot_local_url": "http://127.0.0.1:3000/messages",
+  "bot_local_username_white_list": "张三|李四",
   "proxy": "",
   "hot_reload": false,
   "single_chat_prefix": [

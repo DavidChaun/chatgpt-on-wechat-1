@@ -14,6 +14,7 @@ services:
       TEXT_TO_IMAGE: 'dall-e-3'
       USE_LOCAL: 'False'
       BOT_LOCAL_URL: 'http://127.0.0.1:3000/messages'
+      BOT_LOCAL_USERNAME_WHITE_LIST: ''
       SINGLE_CHAT_PREFIX: '[""]'
       SINGLE_CHAT_REPLY_PREFIX: ''
       GROUP_CHAT_PREFIX: '["bot", "@bot", "机器人", "機器人"]'

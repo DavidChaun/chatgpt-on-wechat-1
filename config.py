@@ -158,6 +158,7 @@ available_setting = {
     "wecom_bot_webhook_key": "",
     "use_local": "",
     "bot_local_url": "",
+    "bot_local_username_white_list": "",
 }
 
 
